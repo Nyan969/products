@@ -568,8 +568,8 @@ dataBase.forEach(obj => {
         removed: obj['removed'],
         productTotalFormatted: (+obj['price'] * +obj['quantity']).toFixed(2).replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' )
     });
-    const priseTotal = +obj['price'] * +obj['quantity'];
-    dataObj[date]['documents'][obj['id']]['total'] = Number((dataObj[date]['documents'][obj['id']]['total'] + priseTotal).toFixed(2));
+    const priceTotal = +obj['price'] * +obj['quantity'];
+    dataObj[date]['documents'][obj['id']]['total'] = Number((dataObj[date]['documents'][obj['id']]['total'] + priceTotal).toFixed(2));
     dataObj[date]['total'] = Number((dataObj[date]['total'] + dataObj[date]['documents'][obj['id']]['total']).toFixed(2));
 
     dataObj[date]['documents'][obj['id']]['totalFormatted'] = dataObj[date]['documents'][obj['id']]['total'].toString().replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' );
