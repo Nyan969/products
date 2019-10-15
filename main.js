@@ -530,7 +530,7 @@ const dataBase = [
         "removed": "1"
     }
 ];
-const MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+const MONTHS = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 const dataObj = {};
 const express = require('express');
 const nunjucks = require('nunjucks');
@@ -549,8 +549,8 @@ function ending(num) {
 
 dataBase.forEach(obj => {
     const nDate = new Date(obj['date']);
-    const date = `${nDate.getDate()} ${MONTHS[`${nDate.getMonth()}`]} ${nDate.getFullYear()}`;
-    !(date in dataObj) ? dataObj[date] = { documents: {}, total: 0} : '';
+    const date = `${nDate.getDate()} ${nDate.getMonth()} ${nDate.getFullYear()}`;
+    !(date in dataObj) ? dataObj[date] = { documents: {}, total: 0, date: `${nDate.getDate()} ${MONTHS[`${nDate.getMonth()}`]}`} : '';
     if (!(obj.id in dataObj[date]['documents'])) {
         dataObj[date]['documents'][obj['id']] = {
             docType: obj['docType'],
@@ -562,12 +562,18 @@ dataBase.forEach(obj => {
         image: obj['image'],
         name: obj['name'],
         price: obj['price'],
+        priceFormatted: Number(obj['price']).toLocaleString('ru-RU'),
         quantity: obj['quantity'],
         ending : ending(obj['quantity']),
-        removed: obj['removed']
+        removed: obj['removed'],
+        productTotalFormatted: Number((+obj['price'] * +obj['quantity']).toFixed(2)).toLocaleString('ru-RU')
     });
-    dataObj[date]['documents'][obj['id']]['total'] = +(dataObj[date]['documents'][obj['id']]['total'] + (obj['price'] * obj['quantity'])).toFixed(2);
-    dataObj[date]['total'] = +(dataObj[date]['total'] + dataObj[date]['documents'][obj['id']]['total']).toFixed(2);
+    const priseTotal = +obj['price'] * +obj['quantity'];
+    dataObj[date]['documents'][obj['id']]['total'] = Number((dataObj[date]['documents'][obj['id']]['total'] + priseTotal).toFixed(2));
+    dataObj[date]['total'] = Number((dataObj[date]['total'] + dataObj[date]['documents'][obj['id']]['total']).toFixed(2));
+
+    dataObj[date]['documents'][obj['id']]['totalFormatted'] = Number(dataObj[date]['documents'][obj['id']]['total']).toLocaleString('ru-RU');
+    dataObj[date]['totalFormatted'] = Number(dataObj[date]['total']).toLocaleString('ru-RU');
 });
 
 console.log(dataObj);
@@ -581,4 +587,4 @@ nunjucks.configure(PATH_TO_TEMPLATES, {
 app.get('/', function (req, res) {
     return res.render('index.html', {dataObj});
 });
-app.listen(3000);
+app.listen(2900);
