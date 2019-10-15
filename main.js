@@ -562,21 +562,19 @@ dataBase.forEach(obj => {
         image: obj['image'],
         name: obj['name'],
         price: obj['price'],
-        priceFormatted: Number(obj['price']).toLocaleString('ru-RU'),
+        priceFormatted: obj['price'].replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' ),
         quantity: obj['quantity'],
         ending : ending(obj['quantity']),
         removed: obj['removed'],
-        productTotalFormatted: Number((+obj['price'] * +obj['quantity']).toFixed(2)).toLocaleString('ru-RU')
+        productTotalFormatted: (+obj['price'] * +obj['quantity']).toFixed(2).replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' )
     });
     const priseTotal = +obj['price'] * +obj['quantity'];
     dataObj[date]['documents'][obj['id']]['total'] = Number((dataObj[date]['documents'][obj['id']]['total'] + priseTotal).toFixed(2));
     dataObj[date]['total'] = Number((dataObj[date]['total'] + dataObj[date]['documents'][obj['id']]['total']).toFixed(2));
 
-    dataObj[date]['documents'][obj['id']]['totalFormatted'] = Number(dataObj[date]['documents'][obj['id']]['total']).toLocaleString('ru-RU');
-    dataObj[date]['totalFormatted'] = Number(dataObj[date]['total']).toLocaleString('ru-RU');
+    dataObj[date]['documents'][obj['id']]['totalFormatted'] = dataObj[date]['documents'][obj['id']]['total'].toString().replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' );
+    dataObj[date]['totalFormatted'] = dataObj[date]['total'].toString().replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' );
 });
-
-console.log(dataObj);
 
 const PATH_TO_TEMPLATES = '.';
 nunjucks.configure(PATH_TO_TEMPLATES, {
