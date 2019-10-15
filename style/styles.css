@@ -58,6 +58,7 @@ body {
 }
 .day__arrow {
     transition: transform 0.2s ease 0s;
+    margin: auto;
 }
 
 .day__number-documents {
