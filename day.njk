@@ -1,38 +1,55 @@
 <section class="day">
     <div class="day__description-box">
-        <h2 class="day__date">
-            <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="day__description-box_date">
+            <svg class="day__arrow" width="9" height="14" viewBox="0 0 9 14" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M5.58564 7.00008L0.292743 12.293L1.70696 13.7072L8.41406 7.00008L1.70696 0.292969L0.292743 1.70718L5.58564 7.00008Z"
-                      fill="#1A1B22"></path>
+                      fill="#a0a0a0"></path>
             </svg>
-            {{ date }}
-        </h2>
-        <p class="day__number-documents">Документов: {{ docsObj.documents | length }} ({{ docsObj.total }} &#8381; )</p>
+            <h2 class="day__date">{{ docsObj.date }}</h2>
+        </div>
+        <p class="day__number-documents">Документов: {{ docsObj.documents | length }} ({{ docsObj.totalFormatted}} &#8381; )</p>
     </div>
-    <article class="debit-credit">
+    <article class="debit-credit hidden">
         {% for idDoc, docObj in docsObj.documents %}
         <div class="debit-credit__description-box">
-            <h3 class="debit-credit__type">{{ docObj.docType }} &#8470; {{ idDoc }}</h3>
-            <p class="debit-credit__sum">{{ docObj.total }} &#8381;</p>
+            <div class="debit-credit__description-box_name">
+                <h3 class="debit-credit__type">{{ docObj.docType }} &#8470; {{ idDoc }}</h3>
+                <p class="debit-credit__sum">{{ docObj.totalFormatted }} &#8381;</p>
+            </div>
+            <div class="debit-credit__description-box_products">
+                <svg class="debit-credit__arrow" version="1.0" xmlns="http://www.w3.org/2000/svg" width="300"
+                     height="300" viewBox="0 0 300.000000 300.000000" preserveAspectRatio="xMidYMid ">
+                    <g transform="rotate(-90 150.00000000000003,159.25) translate(0.000000,300.000000) scale(0.10000000149011612,-0.10000000149011612) "
+                       fill="#a0a0a0" stroke="none">
+                        <path d="m210,2052 c0,-4 290,-297 645,-652 l645,-645 645,645 c355,355 645,648 645,652 0,5 -580,8 -1290,8-710,0 -1290,-3 -1290,-8z"
+                              id="node1" class="node"></path>
+                    </g>
+                    <g id="svg_2" fill="#a0a0a0"
+                       transform="translate(0,300) scale(0.10000000149011612,-0.10000000149011612) " stroke="none">
+                    </g>
+                </svg>
+                <p class="debit-credit__quantity-products">Товаров: {{ docObj.products | length }}</p>
+            </div>
         </div>
-
-        <p class="debit-credit__quantity-products">Товаров: {{ docObj.products | length }}</p>
-        <ul class="products-sections">
-            {% for product in docObj.products %}
-            <li class="product">
-                <img class="product__image"
-                     src="{{ product.image if product.image else  'http://www.st-iv.ru/local/templates/serebnit/img/no_photo.svg' }}"
-                     alt="product__image">
-                <div class="product__description-box">
-                    <p class="product__name">{{ product.name }}</p>
-                                <div class="product__description-box_price">
-                <p class="product__count">{{ product.quantity }} штук{{ product.ending }} &#215; {{ product.price }} &#x20bd;</p>
-                <p class="product__total">{{ (product.quantity * product.price) | round(2)}} &#x20bd;</p>
-                                </div>
-                </div>
-            </li>
+            <ul class="products-sections hidden">
+                {% for product in docObj.products %}
+                    <li class="product">
+                        <img class="product__image"
+                             src="{{ product.image if product.image else  'http://www.st-iv.ru/local/templates/serebnit/img/no_photo.svg' }}"
+                             alt="product image">
+                        <div class="product__description-box">
+                            <p class="product__name">{{ product.name }}</p>
+                            <div class="product__description-box_price">
+                                <p class="product__count">{{ product.quantity }} штук{{ product.ending }}
+                                    &#215; {{ product.priceFormatted }} &#x20bd;</p>
+                                <p class="product__total">{{ product.productTotalFormatted }}
+                                    &#x20bd;</p>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
             {% endfor %}
-        </ul>
-        {% endfor %}
     </article>
 </section>
