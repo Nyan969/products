@@ -1,5 +1,5 @@
 SELECT date,
-       docTypes.name,
+       docTypes.name as docType,
        docs.id,
        products.name,
        image,
