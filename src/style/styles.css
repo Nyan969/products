@@ -33,6 +33,7 @@ body {
     margin: 0 0 8px;
     width: 100%;
     color: #a0a0a0;
+    cursor: pointer;
 }
 
 .day:last-child {
@@ -48,7 +49,6 @@ body {
 .day__description-box_date {
     display: flex;
     margin: 13px 0;
-    cursor: pointer;
 }
 
 .day__date {
@@ -71,6 +71,9 @@ body {
     width: 16px;
     height: 16px;
     transition: transform 0.2s ease 0s;
+}
+.debit-credit {
+    cursor: pointer;
 }
 
 .rotate {
@@ -95,7 +98,6 @@ body {
 .debit-credit__description-box_products {
     display: flex;
     margin: 0 17px;
-    cursor: pointer;
 }
 
 .debit-credit__type {
