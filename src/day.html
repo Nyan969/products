@@ -8,7 +8,8 @@
             </svg>
             <h2 class="day__date">{{ docsObj.date }}</h2>
         </div>
-        <p class="day__number-documents">Документов: {{ docsObj.documents | length }} ({{ docsObj.totalFormatted}} &#8381; )</p>
+        <p class="day__number-documents">Документов: {{ docsObj.documents | length }} ({{ docsObj.totalFormatted}}
+            &#8381; )</p>
     </div>
     <article class="debit-credit hidden">
         {% for idDoc, docObj in docsObj.documents %}
@@ -32,24 +33,24 @@
                 <p class="debit-credit__quantity-products">Товаров: {{ docObj.products | length }}</p>
             </div>
         </div>
-            <ul class="products-sections hidden">
-                {% for product in docObj.products %}
-                    <li class="product">
-                        <img class="product__image"
-                             src="{{ product.image if product.image else  'http://www.st-iv.ru/local/templates/serebnit/img/no_photo.svg' }}"
-                             alt="product image">
-                        <div class="product__description-box">
-                            <p class="product__name">{{ product.name }}</p>
-                            <div class="product__description-box_price">
-                                <p class="product__count">{{ product.quantity }} штук{{ product.ending }}
-                                    &#215; {{ product.priceFormatted }} &#x20bd;</p>
-                                <p class="product__total">{{ product.productTotalFormatted }}
-                                    &#x20bd;</p>
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
+        <ul class="products-sections hidden">
+            {% for product in docObj.products %}
+            <li class="product">
+                <img class="product__image"
+                     src="{{ product.image if product.image else  'http://www.st-iv.ru/local/templates/serebnit/img/no_photo.svg' }}"
+                     alt="product image">
+                <div class="product__description-box">
+                    <p class="product__name">{{ product.name }}</p>
+                    <div class="product__description-box_price">
+                        <p class="product__count">{{ product.quantity }} штук{{ product.ending }}
+                            &#215; {{ product.priceFormatted }} &#x20bd;</p>
+                        <p class="product__total">{{ product.productTotalFormatted }}
+                            &#x20bd;</p>
+                    </div>
+                </div>
+            </li>
             {% endfor %}
+        </ul>
+        {% endfor %}
     </article>
 </section>
