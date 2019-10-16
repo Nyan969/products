@@ -578,7 +578,7 @@ dataBase.forEach(obj => {
         quantity: obj['quantity'],
         ending: ending(obj['quantity']),
         removed: obj['removed'],
-        productTotalFormatted: formatted((priceTotal).toFixed(2))
+        productTotalFormatted: formatted(priceTotal.toFixed(2))
     });
     const doc = dataObj[date]['documents'][obj['id']];
     doc['total'] = doc['total'] + priceTotal;
