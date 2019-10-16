@@ -550,6 +550,10 @@ function ending(num) {
     return arrEndings[2];
 }
 
+function formatted(val) {
+    return val.replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
+}
+
 dataBase.forEach(obj => {
     const nDate = new Date(obj['date']);
     const date = `${nDate.getDate()} ${nDate.getMonth()} ${nDate.getFullYear()}`;
@@ -565,22 +569,22 @@ dataBase.forEach(obj => {
             total: 0
         }
     }
+    const priceTotal = +obj['price'] * +obj['quantity'];
     dataObj[date]['documents'][obj['id']]['products'].push({
         image: obj['image'],
         name: obj['name'],
         price: obj['price'],
-        priceFormatted: obj['price'].replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ','),
+        priceFormatted: formatted(obj['price']),
         quantity: obj['quantity'],
         ending: ending(obj['quantity']),
         removed: obj['removed'],
-        productTotalFormatted: (+obj['price'] * +obj['quantity']).toFixed(2).replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',')
+        productTotalFormatted: formatted((priceTotal).toFixed(2))
     });
-    const priceTotal = +obj['price'] * +obj['quantity'];
-    dataObj[date]['documents'][obj['id']]['total'] = Number((dataObj[date]['documents'][obj['id']]['total'] + priceTotal).toFixed(2));
-    dataObj[date]['total'] = Number((dataObj[date]['total'] + dataObj[date]['documents'][obj['id']]['total']).toFixed(2));
-
-    dataObj[date]['documents'][obj['id']]['totalFormatted'] = dataObj[date]['documents'][obj['id']]['total'].toString().replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
-    dataObj[date]['totalFormatted'] = dataObj[date]['total'].toString().replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
+    const doc = dataObj[date]['documents'][obj['id']];
+    doc['total'] = doc['total'] + priceTotal;
+    dataObj[date]['total'] = dataObj[date]['total'] + doc['total'];
+    doc['totalFormatted'] = formatted(doc['total'].toFixed(2));
+    dataObj[date]['totalFormatted'] = formatted(dataObj[date]['total'].toFixed(2));
 });
 
 module.exports = {
