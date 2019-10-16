@@ -584,8 +584,8 @@ dataBase.forEach(obj => {
         productTotalFormatted: formatted(priceTotal.toFixed(2))
     });
 
-    doc.total = doc.total + priceTotal;
-    day.total = day.total + doc.total;
+    doc.total += priceTotal;
+    day.total += doc.total;
     doc.totalFormatted = formatted(doc.total.toFixed(2));
     day.totalFormatted = formatted(day.total.toFixed(2));
 });
