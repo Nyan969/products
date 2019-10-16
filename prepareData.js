@@ -581,10 +581,11 @@ dataBase.forEach(obj => {
         productTotalFormatted: formatted(priceTotal.toFixed(2))
     });
     const doc = dataObj[date]['documents'][obj['id']];
+    const day = dataObj[date];
     doc['total'] = doc['total'] + priceTotal;
-    dataObj[date]['total'] = dataObj[date]['total'] + doc['total'];
+    day['total'] = day['total'] + doc['total'];
     doc['totalFormatted'] = formatted(doc['total'].toFixed(2));
-    dataObj[date]['totalFormatted'] = formatted(dataObj[date]['total'].toFixed(2));
+    day['totalFormatted'] = formatted(day['total'].toFixed(2));
 });
 
 module.exports = {
