@@ -530,59 +530,59 @@ const dataBase = [
         "removed": "1"
     }
 ];
+
 const MONTHS = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 const dataObj = {};
-const express = require('express');
-const nunjucks = require('nunjucks');
-const app = express();
-app.use( '/style', express.static(__dirname + '/style'));
-app.use( '/module', express.static(__dirname + '/module'));
 
 function ending(num) {
     const arrEndings = ['а', 'и', ''];
-    num = num % 100; const n1 = num % 10;
-    if (num > 10 && num < 20) { return arrEndings[2]; }
-    if (n1 > 1 && n1 < 5) { return arrEndings[1]; }
-    if (n1 === 1) { return arrEndings[0]; }
+    num = num % 100;
+    const n1 = num % 10;
+    if (num > 10 && num < 20) {
+        return arrEndings[2];
+    }
+    if (n1 > 1 && n1 < 5) {
+        return arrEndings[1];
+    }
+    if (n1 === 1) {
+        return arrEndings[0];
+    }
     return arrEndings[2];
 }
 
 dataBase.forEach(obj => {
     const nDate = new Date(obj['date']);
     const date = `${nDate.getDate()} ${nDate.getMonth()} ${nDate.getFullYear()}`;
-    !(date in dataObj) ? dataObj[date] = { documents: {}, total: 0, date: `${nDate.getDate()} ${MONTHS[`${nDate.getMonth()}`]}`} : '';
+    !(date in dataObj) ? dataObj[date] = {
+        documents: {},
+        total: 0,
+        date: `${nDate.getDate()} ${MONTHS[`${nDate.getMonth()}`]}`
+    } : '';
     if (!(obj.id in dataObj[date]['documents'])) {
         dataObj[date]['documents'][obj['id']] = {
             docType: obj['docType'],
             products: [],
-            total : 0
+            total: 0
         }
     }
     dataObj[date]['documents'][obj['id']]['products'].push({
         image: obj['image'],
         name: obj['name'],
         price: obj['price'],
-        priceFormatted: obj['price'].replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' ),
+        priceFormatted: obj['price'].replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ','),
         quantity: obj['quantity'],
-        ending : ending(obj['quantity']),
+        ending: ending(obj['quantity']),
         removed: obj['removed'],
-        productTotalFormatted: (+obj['price'] * +obj['quantity']).toFixed(2).replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' )
+        productTotalFormatted: (+obj['price'] * +obj['quantity']).toFixed(2).replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',')
     });
     const priceTotal = +obj['price'] * +obj['quantity'];
     dataObj[date]['documents'][obj['id']]['total'] = Number((dataObj[date]['documents'][obj['id']]['total'] + priceTotal).toFixed(2));
     dataObj[date]['total'] = Number((dataObj[date]['total'] + dataObj[date]['documents'][obj['id']]['total']).toFixed(2));
 
-    dataObj[date]['documents'][obj['id']]['totalFormatted'] = dataObj[date]['documents'][obj['id']]['total'].toString().replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' );
-    dataObj[date]['totalFormatted'] = dataObj[date]['total'].toString().replace( /\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ' ).replace( /[.]/g, ',' );
+    dataObj[date]['documents'][obj['id']]['totalFormatted'] = dataObj[date]['documents'][obj['id']]['total'].toString().replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
+    dataObj[date]['totalFormatted'] = dataObj[date]['total'].toString().replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
 });
 
-const PATH_TO_TEMPLATES = '.';
-nunjucks.configure(PATH_TO_TEMPLATES, {
-    autoescape: true,
-    express: app
-});
-
-app.get('/', function (req, res) {
-    return res.render('index.html', {dataObj});
-});
-app.listen(2900);
+module.exports = {
+    dataObj
+};
