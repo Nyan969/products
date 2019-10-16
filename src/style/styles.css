@@ -185,6 +185,10 @@ display: none;
 }
 
 @media screen and (max-width: 515px) {
+    .day__description-box {
+        padding: 0 5px;
+    }
+
     .product__description-box {
         width: calc(100% - 80px);
     }
