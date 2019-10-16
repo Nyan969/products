@@ -551,7 +551,8 @@ function ending(num) {
 }
 
 function formatted(val) {
-    return val.replace(/\B(?=(?:\d{3})([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
+    typeof val === 'number' ? val = Number(val.toFixed(2)).toString() : '';
+    return  val.replace(/\B(?=(?:\d{3})+([.]\d{1,2})?$)/g, ' ').replace(/[.]/g, ',');
 }
 
 dataBase.forEach(obj => {
@@ -581,13 +582,14 @@ dataBase.forEach(obj => {
         quantity: obj.quantity,
         ending: ending(obj.quantity),
         removed: obj.removed,
-        productTotalFormatted: formatted(priceTotal.toFixed(2))
+        productTotalFormatted: formatted(priceTotal)
     });
 
     doc.total += priceTotal;
-    day.total += doc.total;
-    doc.totalFormatted = formatted(doc.total.toFixed(2));
-    day.totalFormatted = formatted(day.total.toFixed(2));
+    day.total += priceTotal;
+
+    doc.totalFormatted = formatted(doc.total);
+    day.totalFormatted = formatted(day.total);
 });
 
 module.exports = {
