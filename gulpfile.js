@@ -4,6 +4,7 @@ const prefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify-es').default;
 const babel = require('gulp-babel');
+const ghPages = require('gulp-gh-pages');
 
 const Data = require('./prepareData');
 let dataObj = Data.dataObj;
@@ -22,4 +23,9 @@ gulp.task('render', function () {
         }))
         .pipe(uglify())
         .pipe(gulp.dest('dist/module'))
+});
+
+gulp.task('deploy', function() {
+    return gulp.src('./dist/**/*')
+        .pipe(ghPages());
 });
