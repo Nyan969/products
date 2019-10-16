@@ -555,37 +555,37 @@ function formatted(val) {
 }
 
 dataBase.forEach(obj => {
-    const nDate = new Date(obj['date']);
+    const nDate = new Date(obj.date);
     const date = `${nDate.getDate()} ${nDate.getMonth()} ${nDate.getFullYear()}`;
     !(date in dataObj) ? dataObj[date] = {
         documents: {},
         total: 0,
         date: `${nDate.getDate()} ${MONTHS[`${nDate.getMonth()}`]}`
     } : '';
-    if (!(obj.id in dataObj[date]['documents'])) {
-        dataObj[date]['documents'][obj['id']] = {
-            docType: obj['docType'],
+    if (!(obj.id in dataObj[date].documents)) {
+        dataObj[date].documents[obj.id] = {
+            docType: obj.docType,
             products: [],
             total: 0
         }
     }
-    const priceTotal = +obj['price'] * +obj['quantity'];
-    dataObj[date]['documents'][obj['id']]['products'].push({
-        image: obj['image'],
-        name: obj['name'],
-        price: obj['price'],
-        priceFormatted: formatted(obj['price']),
-        quantity: obj['quantity'],
-        ending: ending(obj['quantity']),
-        removed: obj['removed'],
+    const priceTotal = +obj.price * +obj.quantity;
+    dataObj[date].documents[obj.id].products.push({
+        image: obj.image,
+        name: obj.name,
+        price: obj.price,
+        priceFormatted: formatted(obj.price),
+        quantity: obj.quantity,
+        ending: ending(obj.quantity),
+        removed: obj.removed,
         productTotalFormatted: formatted(priceTotal.toFixed(2))
     });
-    const doc = dataObj[date]['documents'][obj['id']];
     const day = dataObj[date];
-    doc['total'] = doc['total'] + priceTotal;
-    day['total'] = day['total'] + doc['total'];
-    doc['totalFormatted'] = formatted(doc['total'].toFixed(2));
-    day['totalFormatted'] = formatted(day['total'].toFixed(2));
+    const doc = day.documents[obj.id];
+    doc.total = doc.total + priceTotal;
+    day.total = day.total + doc.total;
+    doc.totalFormatted = formatted(doc.total.toFixed(2));
+    day.totalFormatted = formatted(day.total.toFixed(2));
 });
 
 module.exports = {
